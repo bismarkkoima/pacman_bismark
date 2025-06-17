@@ -1,29 +1,28 @@
-# pacman.py
 import pygame
 
 TILE_SIZE = 32
 
 class Pacman:
     def __init__(self, x, y):
-        self.image = pygame.image.load("assets/sprites/pacman.png")
-        self.rect = self.image.get_rect(topleft=(x * TILE_SIZE, y * TILE_SIZE))
-        self.direction = pygame.Vector2(0, 0)
-        self.speed = 2  # adjust speed as needed
+        self.x = x
+        self.y = y
+        self.speed = 2
+        self.rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+        self.color = (255, 255, 0)
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= self.speed
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += self.speed
         if keys[pygame.K_UP]:
-            self.direction = pygame.Vector2(0, -1)
-        elif keys[pygame.K_DOWN]:
-            self.direction = pygame.Vector2(0, 1)
-        elif keys[pygame.K_LEFT]:
-            self.direction = pygame.Vector2(-1, 0)
-        elif keys[pygame.K_RIGHT]:
-            self.direction = pygame.Vector2(1, 0)
+            self.rect.y -= self.speed
+        if keys[pygame.K_DOWN]:
+            self.rect.y += self.speed
 
     def update(self):
-        self.rect.x += self.direction.x * self.speed
-        self.rect.y += self.direction.y * self.speed
+        pass  # Add collision or animation later
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
+        pygame.draw.circle(screen, self.color, self.rect.center, TILE_SIZE // 2)
